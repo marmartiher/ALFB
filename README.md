@@ -60,6 +60,8 @@ I will start with multiple linear regression model, using as dependent variable 
 This model is appropriate because you want to know how several independent variables (predictors) influence a continuous dependent variable (the amount of food to be distributed in 'adxx'). In addition, the multiple linear regression model can handle both numerical variables (such as babies, children, adults, seniors, unemployment, users, ac01) and categorical variables (such as neighborhood and bell), although categorical variables must be properly coded before including them in the model.
 
 ```
+# Multiple linear regression
+
 import pandas as pd
 from sklearn.model_selection import train_test_split, StratifiedKFold
 from sklearn.linear_model import LinearRegression
@@ -70,7 +72,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.metrics import mean_absolute_error, r2_score
 
 # Cargar los datos
-data_path = 'D:/_Curso Inteligencia Artificial/BuildingAI/NBancoAlimentos.csv'
+data_path = 'NBancoAlimentos.csv'
 data = pd.read_csv(data_path)
 
 # Preparar los datos
