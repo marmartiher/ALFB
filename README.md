@@ -1,2 +1,2 @@
-# ALFB
-Automation Local Food Bank
+# Automation Local Food Bank
+Building AI course project
