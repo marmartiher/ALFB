@@ -27,7 +27,7 @@ In the project I am presenting for the Building AI course, I will develop only t
 
 The data sources are based on the historical data collected from previous campaigns for food collection and distribution: lists of food collected or purchased, lists of food distributed, lists of beneficiary associations, lists of volunteers, etc. These data are currently collected in spreadsheets, without personal data. 
 
-	In this first phase, machine learning techniques will be applied to predict needs in future campaigns based on data collected in previous campaigns.
+In this first phase, machine learning techniques will be applied to predict needs in future campaigns based on data collected in previous campaigns.
  
 To feed the machine learning models for the predictions and functionalities mentioned above, accurate and relevant user data collection is essential. 
 
