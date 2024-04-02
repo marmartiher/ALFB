@@ -59,69 +59,6 @@ I will start with multiple linear regression model, using as dependent variable 
 
 This model is appropriate because you want to know how several independent variables (predictors) influence a continuous dependent variable (the amount of food to be distributed in 'adxx'). In addition, the multiple linear regression model can handle both numerical variables (such as babies, children, adults, seniors, unemployment, users, ac01) and categorical variables (such as neighborhood and bell), although categorical variables must be properly coded before including them in the model.
 
-'''
-import pandas as pd
-from sklearn.model_selection import train_test_split, StratifiedKFold
-from sklearn.linear_model import LinearRegression
-from sklearn.metrics import mean_squared_error
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import Pipeline
-from sklearn.metrics import mean_absolute_error, r2_score
 
-# Load the data
-data_path = 'D:/_Curso Inteligencia Artificial/BuildingAI/NBancoAlimentos.csv'
-data = pd.read_csv(data_path)
 
-# Prepare the data
-X = data.drop('ad01', axis=1)  # Independent variables
-y = data['ad01']  # Dependent variable
 
-# One-hot encoding for categorical variables and passthrough for numerical variables
-preprocessor = ColumnTransformer(
-    transformers=[
-        ('cat', OneHotEncoder(handle_unknown='ignore'), ['barriada', 'campana'])
-    ], remainder='passthrough')
-
-# Create a pipeline with preprocessing and regression model
-model_pipeline = Pipeline(steps=[('preprocessor', preprocessor), ('regressor', LinearRegression())])
-
-# Split the data ensuring all 'campana' groups are represented in the test set
-# This is done to capture the annual variability and the particularity of the winter or Christmas campaign
-# Since 'campana' is a categorical variable, we will use a splitting approach that maintains the proportion of each category
-
-# Split the data into training and test sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=X['campana'], random_state=42)
-
-# Fit the model
-model_pipeline.fit(X_train, y_train)
-
-# Make predictions on the test set
-y_pred = model_pipeline.predict(X_test)
-
-# Calculate and display the MSE
-mse = mean_squared_error(y_test, y_pred)
-print(f'MSE: {mse}')
-
-# Mean Absolute Error (MAE)
-mae = mean_absolute_error(y_test, y_pred)
-
-# Coefficient of Determination (R^2)
-r2 = r2_score(y_test, y_pred)
-
-print(f'MAE: {mae}')
-print(f'R^2: {r2}')
-
-# Calculate the minimum and maximum of the dependent variable 'ad01'
-ad01_min = data['ad01'].min()
-ad01_max = data['ad01'].max()
-
-# Calculate the range (difference between the maximum and minimum)
-ad01_range = ad01_max - ad01_min
-
-# Calculate the mean of 'ad01'
-ad01_mean = data['ad01'].mean()
-
-print(f"Min: {ad01_min}, Max: {ad01_max}, Range: {ad01_range}, Mean: {ad01_mean}")
-
-'''
