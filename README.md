@@ -152,3 +152,50 @@ ad01_mean = data['ad01'].mean()
 print(f"Min: {ad01_min}, Max: {ad01_max}, Range: {ad01_range}, Mean: {ad01_mean}")
 
 ```
+
+Explanation of the Python code used.
+
+- The necessary pandas and sklearn libraries are imported.
+   
+- Load the data from the CSV file from the specified path.
+
+- Prepare the data by separating the independent variables (X) from the dependent variable (y).
+
+- Coded the categorical variables 'slum' and 'bell' as One-Hot, and took the numeric variables unchanged.
+    
+- A pipeline including the preprocessing and the linear regression model is created.
+model_pipeline
+
+The data is split into training and test sets, ensuring that all 'bell' categories are represented in the test set. This is done to capture the year-to-year variability and the particularity of the Christmas campaign, since 'bell' is a categorical variable, we will use a splitting approach that maintains the proportion of each category.
+   
+- Fit the model using the training data: model_pipeline.fit().
+   
+- Predictions are made on the test set y_pred.
+   
+- The mean squared error MSE of the predictions is calculated and displayed.
+   
+- The mean absolute error MAE is calculated.
+   
+- The coefficient of determination (R^2) is calculated.
+   
+- Display the values of MAE and R^2.
+  
+- The minimum and maximum of the dependent variable ad01 is calculated.
+  
+- The mean of ad01 is calculated.
+
+- These previous values are displayed.
+
+The values shown in this model are as follows:
+MSE: 253.97316688451133 MAE: 14.2931864274963 R^2: 0.9753112465843767 Min: 177, Max: 562, Range: 385, Mean: 413.02.
+
+Model evaluation considerations:
+
+The values of ad01 range from 177 to 562, with a range of 385 units and a mean of approximately 413. This indicates that the dependent variable has considerable variability but is centered around a median value greater than 400.
+
+Given the 385-unit range of ad01, an MSE of approximately 254 means that the model predictions tend to deviate from the true value by an amount that is relatively small compared to the total variability of the data. This is indicative of a good model fit.
+
+Given that the mean of ad01 is 413, an MAE of approximately 14.3 suggests that the model predictions, on average, deviate from the true value by only a few percent of the mean value of ad01. This is less than 4% of the mean, indicating high accuracy in the model predictions.
+
+Such a high coefficient of determination R^2 suggests that the model explains approximately 97.5% of the variability in the ad01 data, which is excellent. This indicates that the selected independent variables have a strong linear relationship with the amount of food to be distributed and that the model is very effective in predicting ad01.
+
