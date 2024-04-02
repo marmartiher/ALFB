@@ -49,7 +49,7 @@ Although in a second phase of the project we will be able to have more quality d
 10. Expiry of food type A01 (ac01= expired food type A01): Percentage of that food A02 expired (not deliverable).
 11. Distributed food type A01 (ad01 = distributed food type A01): Quantity of food type coded A01 distributed in units (packages, cans, UTH). All foods are packaged, canned or bottled, and each package was noted as a unit, regardless of weight or size.
     
-	Given the assumption that different food types are significantly influenced by the input characteristics and for interpretability reasons, I will choose to treat each food type separately, trying different models, taking care not to over-fit. So we will have as many tables as different types of food.
+Given the assumption that different food types are significantly influenced by the input characteristics and for interpretability reasons, I will choose to treat each food type separately, trying different models, taking care not to over-fit. So we will have as many tables as different types of food.
 
 Although, at first glance, it can be deduced that the seasonal variations of the different campaigns influence the amount of food donated and requested, by having a temporal characteristic (campna) that practically coincides with the seasons of the year, the model chosen can recognize the patterns associated with each period, which allows not to make further divisions and to treat in a single file each type of food.
 
