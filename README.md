@@ -72,7 +72,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.metrics import mean_absolute_error, r2_score
 
 # Load the data
-data_path = 'D:/_Curso Inteligencia Artificial/BuildingAI/NBancoAlimentos.csv'
+data_path = 'https://github.com/marmartiher/ALFB/blob/main/NBancoAlimentos.csv'
 data = pd.read_csv(data_path)
 
 # Prepare the data
