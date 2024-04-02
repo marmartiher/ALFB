@@ -48,6 +48,28 @@ Although in a second phase of the project we will be able to have more quality d
 9. Users served (usuarios): Number of people served in each neighborhood and campaign.
 10. Expiry of food type A01 (ac01= expired food type A01): Percentage of that food A02 expired (not deliverable).
 11. Distributed food type A01 (ad01 = distributed food type A01): Quantity of food type coded A01 distributed in units (packages, cans, UTH). All foods are packaged, canned or bottled, and each package was noted as a unit, regardless of weight or size.
+
+Food types are coded as follows:
+
+Ad01 = Baby food (infant formula, infant milks, etc.) - Baby food (infant formula, infant milks, etc.).
+
+Ad02 = Cereals and grains (rice, pasta in various forms, quinoa, flaked or grained oats, buckwheat, millet, breakfast cereals, whole grain cereals)
+
+Ad03 = Dried pulses (lentils, chickpeas, beans, dried peas, soybeans)
+
+Ad04 = Canned and tinned foods (canned vegetables, canned fruits, canned fish, canned meats, peanut butter or chocolate, powdered milk, condensed milk, honey)
+
+Ad05 = Nuts and seeds (almonds, walnuts, pumpkin seeds, sunflower seeds, etc.)
+
+Ad06 = Oils and fats (olive oil, sunflower oil, coconut oil, canola oil, butters)
+
+Ad07 = Sweets and snacks (granola bars, cookies, chocolate bars, dried fruits, jams)
+
+Ad08 = Sauces and condiments (salt, ketchup, mustard, soy, bouillon cubes or powdered broth)
+
+Ad09 = Beverages (coffee, tea, powdered beverages, UTH bedding, pasteurized fruit juices, packaged soups)
+
+Ad10 = Flours and bakery products (wheat flour, corn flour, toasted bread, packaged sliced bread)
     
 Given the assumption that different food types are significantly influenced by the input characteristics and for interpretability reasons, I will choose to treat each food type separately, trying different models, taking care not to over-fit. So we will have as many tables as different types of food.
 
