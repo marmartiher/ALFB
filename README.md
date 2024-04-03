@@ -200,7 +200,7 @@ We can see that, for example, the relationship between babies and the amount of 
 
 ![image of a Food Bank](/alfb001.jpg)
 
-En otro ejemplo de relación entre la variable independiente campaña y el tipo de alimento ad01, se puede ver como en las campañas de invierno (formato AAAAI) y de otoño (formato AAAAO) hay un mayor reparto de este tipo de alimento, especialmente en la de invierno, mientras que las otras dos campañas estacionales están más igualadas en la demanda de este tipo de alimentos y por debajo de las antes mencionadas.
+In another example of the relationship between the independent variable campaign and the type of food ad01, it can be seen how in the winter (AAAAI format) and autumn (AAAAO format) campaigns there is a greater distribution of this type of food, especially in the winter campaign, while the other two seasonal campaigns are more equal in the demand for this type of food and below those mentioned above.
 
 ![image of a Food Bank](/alfb002.jpg)
 
