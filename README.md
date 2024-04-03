@@ -305,7 +305,9 @@ The R² coefficient has increased from 0.946 to 0.985, which means that the mode
 
 The range and mean values have not changed, as they are intrinsic properties of your data set. However, they serve as an important reference to contextualize the improvements in MSE and MAE. Especially, the improvement in MAE which is remarkably good.
 
-In order not to extend too much I will show, with this second model, its behavior with one more type of food, the amount of food estimated for type Ad02 (Cereals and grains: rice, pasta in various forms, quinoa, oat flakes or grain, buckwheat, millet, breakfast cereals, whole grain cereals), as the target variable. For the rest of the food types the behavior of the application of this model has been very similar.
+In order not to be too long, I will show the behavior of these two models with another type of food, the amount of food estimated for type Ad02 (Cereals and grains: rice, pasta in various forms, quinoa, flaked or grain oats, buckwheat, millet, breakfast cereals, whole grain cereals), as the target variable. For the rest of the food types the behaviors of these models have been very similar.
+
+
 
 
 ### Second phase of the project
