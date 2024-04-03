@@ -352,7 +352,7 @@ o Inventory Optimization: Targeting donations to the most needed items helps avo
 o Forecasting and Planning: Analysis of past trends and consumption patterns allows for forecasting future needs and planning appropriately, reducing waste and improving resource allocation.
 
 
-	In a second phase of the project, an App will be created using NLP techniques to manage food demand from recipients, and food or cash donations from individuals, integrating it with a chatbot through an API, to communicate with recipients, donors and volunteers. 
+In a second phase of the project, an App will be created using NLP techniques to manage food demand from recipients, and food or cash donations from individuals, integrating it with a chatbot through an API, to communicate with recipients, donors and volunteers. 
  
 The App and chatbot will be developed as separate interacting components, to facilitate flexibility to develop and update each component independently, and to make the chatbot also usable on other channels besides the app, such as websites (corporate website) or messaging platforms like WhatsApp or Telegram.
 
