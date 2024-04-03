@@ -207,3 +207,81 @@ In another example of the relationship between the independent variable campaign
 The relationship between users and the type of food demanded, ad01, is positive but somewhat more dispersed than between babies and ad01, which has a certain logic, since users consume all types of food and ad01 are specific foods for babies.
 
 ![image of a Food Bank](/alfb003.jpg)
+
+I have also tried the SVR model, but it gives very poor forecasts, and I have not been able to adjust it.
+
+Another model that has given good results has been a neural network model. Below I show the code in Python language:
+
+```
+# Neural Network Model
+
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from sklearn.neural_network import MLPRegressor
+import pandas as pd
+import numpy as np
+
+# Load data
+data_path = 'https://github.com/marmartiher/ALFB/blob/main/NBancoAlimentos01.csv'
+data = pd.read_csv(data_path)
+
+# Prepare the data
+X = data.drop('ad01', axis=1)  # Variables independientes
+y = data['ad01']  # Variable dependiente
+
+# Identify categorical variables for one-hot coding and numerical variables for standardization.
+categorical_features = ['barriada', 'campana']
+numeric_features = ['bebes', 'ninos', 'adultos', 'seniors', 'desempleo', 'usuarios', 'ac01']
+
+# Create the preprocessor with OneHotEncoder for categorical variables and StandardScaler for numeric variables.
+preprocessor = ColumnTransformer(
+    transformers=[
+        ('onehot', OneHotEncoder(handle_unknown='ignore'), categorical_features),
+        ('scaler', StandardScaler(), numeric_features)
+    ])
+
+# Create a pipeline with preprocessing and a neural network model
+model_pipeline = Pipeline(steps=[
+    ('preprocessor', preprocessor),
+    ('regressor', MLPRegressor(hidden_layer_sizes=(64, 64), activation='relu', random_state=42, max_iter=1000))
+])
+
+# Split the data into training and test
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Training the model
+model_pipeline.fit(X_train, y_train)
+
+# Making predictions
+y_pred = model_pipeline.predict(X_test)
+
+# Evaluate the model
+mse = mean_squared_error(y_test, y_pred)
+mae = mean_absolute_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+
+# Calculate the range and mean of 'ad01'.
+ad01_range = y.max() - y.min()
+ad01_mean = y.mean()
+
+# Show results
+print(f"MSE (Mean Squared Error): {mse}")
+print(f"MAE (Mean Absolute Error): {mae}")
+print(f"R² (Coefficient of Determination): {r2}")
+print(f"Range 'ad01': {ad01_range}")
+print(f"Mean 'ad01': {ad01_mean}")
+```
+
+I adjusted the iterations (max_iter) from 500 to 1000, which has produced better results:
+
+The MSE has decreased considerably from 291.81 to 109.32. This reduction indicates that the mean squared error of the model predictions has been reduced, suggesting that the predictions are closer to the true values on average. This improvement in the MSE reflects a more accurate fit of the model to the data.
+
+The MAE has also decreased markedly from 12.58 to 6.97. This is an indicator that, on average, the model predictions now deviate less from the true value, improving the accuracy of the predictions. A lower MAE is particularly important in practical applications because it reflects less absolute error in the model predictions.
+
+The R² coefficient has increased from 0.946 to 0.980, which means that the model can now explain 98% of the variability in the dependent variable 'ad01', compared to 94.6% previously. This is an excellent level of fit, indicating that the model very effectively captures the underlying relationships between the independent variables and the dependent variable.
+
+Range of 'ad01' - 330; Mean of 'ad01' - 268.19: These values have not changed, as they are intrinsic properties of your data set. However, they serve as an important reference to contextualize the improvements in MSE and MAE. Especially, the improvement in MAE to less than 3% of the mean of 'ad01' is remarkably good.
+
