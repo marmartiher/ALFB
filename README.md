@@ -81,6 +81,8 @@ I will start with multiple linear regression model, using as dependent variable 
 
 This model is appropriate because you want to know how several independent variables (predictors) influence a continuous dependent variable (the amount of food to be distributed in 'adxx'). In addition, the multiple linear regression model can handle both numerical variables (such as babies, children, adults, seniors, unemployment, users, ac01) and categorical variables (such as neighborhood and bell), although categorical variables must be properly coded before including them in the model.
 
+**Multiple linear regression Model**
+
 ```
 # Multiple linear regression
 
@@ -210,6 +212,8 @@ The relationship between users and the type of food demanded, ad01, is positive 
 
 I have also tried the SVR model, but it gives very poor forecasts, and I have not been able to adjust it.
 
+**Neural Network Model**
+
 Another model that has given good results has been a neural network model. Below I show the code in Python language:
 
 ```
@@ -274,6 +278,20 @@ print(f"R² (Coefficient of Determination): {r2}")
 print(f"Range 'ad01': {ad01_range}")
 print(f"Mean 'ad01': {ad01_mean}")
 ```
+
+The results obtained are as follows:
+
+MSE (Mean Squared Error): 109.31786687821625
+
+MAE (Mean Absolute Error): 6.965185803489726
+
+R² (Coefficient of Determination): 0.9797012190502139
+
+Rango de 'ad01': 330
+
+Media de 'ad01': 268.18548387096774
+
+**Model evaluation considerations:**
 
 I adjusted the iterations (max_iter) from 500 to 1000, which has produced better results:
 
