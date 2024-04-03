@@ -356,9 +356,9 @@ o Forecasting and Planning: Analysis of past trends and consumption patterns all
  
 The App and chatbot will be developed as separate interacting components, to facilitate flexibility to develop and update each component independently, and to make the chatbot also usable on other channels besides the app, such as websites (corporate website) or messaging platforms like WhatsApp or Telegram.
 
-#How is it used#
+#How is it used
 
-##First phase of the project:##
+##First phase of the project:
 
 The first phase of the project, focused on the optimization and use of food, will be used by volunteers assigned to control and management tasks, who, in turn, will be responsible for providing the results to those responsible for the food bank, so that they can make the appropriate arrangements with the competent administrations, companies and supermarkets that want to collaborate, as well as with neighborhood associations.
 
@@ -386,7 +386,7 @@ o Fraud Detection: Implement systems that learn normal usage patterns and can al
 
 The success of these applications depends on the quality and quantity of data available, as well as an ethical implementation that respects the privacy and security of users. Machine learning, in this context, can not only make the app more efficient and useful, but, at a later stage, can also provide valuable insights to continuously improve the service and proactively respond to the changing needs of the community.
 
-##Second phase of the project:##
+##Second phase of the project:
 
 The second phase involves all the parties involved: 
 
@@ -649,7 +649,7 @@ Research and Development:
 
 - Pilot Projects: Participate in the implementation of pilot projects to test new ideas or approaches to food distribution, data collection, or app functionality.
 
-#Challenges#
+#Challenges
 
 Storage, although it could possibly be mechanized, will not be addressed, as the collaborating volunteers will be well trained and there is a system of storage by expiration dates and type of food. Using robots for storage would be too expensive and disproportionate for a local food bank.
 
@@ -667,12 +667,12 @@ However, through an interactive corporate website, it is possible to answer many
 
 As for the challenges of the operation of the technological solutions in the different phases of the project, they have already been included in the previous point, when developing the characteristics of these solutions.
 
-#What next#
+#What next
 
 I believe that this project is ambitious and could be extended to any local or even national food bank, if the expected results are achieved in the different phases.
 
 Later phases of the project could be undertaken to improve and mechanize other aspects of management, and to improve the feedback of the phases that are consolidated, as long as the technical and material means are available to implement the tasks described.
 
-#Acknowledgments#
+#Acknowledgments
 
 I thank all the volunteers and people with recognized experience in these matters, who have advised me and helped me to get a better understanding of all the possible difficulties, complexities and possible solutions to develop a project of this type.
