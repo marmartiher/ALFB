@@ -180,7 +180,7 @@ R^2: 0.9525076234939224
 
 Min: 112, Max: 442, Rango: 330, Media: 268.18548387096774
 
-** Model evaluation considerations: **
+**Model evaluation considerations:**
 
 The MSE is a measure of the quality of an estimator; it is always non-negative, and smaller values indicate a better fit. An MSE of 248.47 suggests that, on average, the model predicts the dependent variable ad01 with a mean square error of 248.47. Since the MSE depends on the scale of the variable, it is useful to compare it with the range and mean of ad01 to get a better idea of its magnitude.
 
