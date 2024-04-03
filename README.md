@@ -204,6 +204,6 @@ In another example of the relationship between the independent variable campaign
 
 ![image of a Food Bank](/alfb002.jpg)
 
-The relationship between users and the type of food demanded, ad01, is positive but much more dispersed than between babies and ad01, which has a certain logic, since users consume all types of food and ad01 are specific foods for babies.
+The relationship between users and the type of food demanded, ad01, is positive but somewhat more dispersed than between babies and ad01, which has a certain logic, since users consume all types of food and ad01 are specific foods for babies.
 
 ![image of a Food Bank](/alfb003.jpg)
