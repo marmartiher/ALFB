@@ -199,3 +199,8 @@ Visualizing the relationship between each independent variable and ad01 using sc
 We can see that, for example, the relationship between babies and the amount of food ad01, there is a positive relationship between the increase in babies and the increase in food type ad01. Which is logical in this case, since food type ad01 encompasses food intended for babies. The graph shows different groups of points, which suggests that there are subgroups within the data, but this is probably due to the fact that at certain times of the year (food distribution campaigns) there is usually more demand for food in general and, therefore, for this type of food as well.
 
 ![image of a Food Bank](/alfb001.jpg)
+
+En otro ejemplo de relación entre la variable independiente campaña y el tipo de alimento ad01, se puede ver como en las campañas de invierno (formato AAAAI) y de otoño (formato AAAAO) hay un mayor reparto de este tipo de alimento, especialmente en la de invierno, mientras que las otras dos campañas estacionales están más igualadas en la demanda de este tipo de alimentos y por debajo de las antes mencionadas.
+
+![image of a Food Bank](/alfb002.jpg)
+
