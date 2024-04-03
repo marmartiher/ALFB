@@ -48,7 +48,7 @@ Although in a second phase of the project we will be able to have more quality d
 7. Population over 65 years old (seniors).
 8. Unemployment rate (desempleo): Unemployment rate by neighborhood in percent.
 9. Users served (usuarios): Number of people served in each neighborhood and campaign.
-10. Expiry of food type A01 (ac01= expired food type A01): Percentage of that food A02 expired (not deliverable).
+10. Estimated shelf life of food type A01 (ac01= expired food type A01): Percentage of that food A02 expired (not deliverable).
 11. Distributed food type A01 (ad01 = distributed food type A01): Quantity of food type coded A01 distributed in units (packages, cans, UTH). All foods are packaged, canned or bottled, and each package was noted as a unit, regardless of weight or size.
 
 Food types are coded as follows:
@@ -176,23 +176,23 @@ for var in independent_variables:
 
 The values shown in this model are as follows:
 
-MSE: 248.4674999045983
+MSE: 238.40
 
-MAE: 11.28003393725271
+MAE: 11.50
 
-R^2: 0.9525076234939224
+R^2: 0.9538
 
-Min: 112, Max: 442, Rango: 330, Media: 268.18548387096774
+Min: 114, Max: 438, Rango: 324, Media: 268.27
 
 **Model evaluation considerations:**
 
-The MSE is a measure of the quality of an estimator; it is always non-negative, and smaller values indicate a better fit. An MSE of 248.47 suggests that, on average, the model predicts the dependent variable ad01 with a mean square error of 248.47. Since the MSE depends on the scale of the variable, it is useful to compare it with the range and mean of ad01 to get a better idea of its magnitude.
+The MSE is a measure of the quality of an estimator; it is always non-negative, and smaller values indicate a better fit. An MSE of 238.40 suggests that, on average, the model predicts the dependent variable ad01 with a mean square error of 238.4. Since the MSE depends on the scale of the variable, it is useful to compare it with the range and mean of ad01 to get a better idea of its magnitude.
 
-The MAE is another measure of error that provides the mean absolute difference between observed and predicted values. An MAE of 11.28 indicates that, on average, the model predictions deviate by 11.28 units from the actual values. It is a more robust measure and easier to interpret compared to the MSE, especially in the presence of outliers.
+The MAE is another measure of error that provides the mean absolute difference between observed and predicted values. An MAE of 11.50 indicates that, on average, the model predictions deviate by 11.5 units from the actual values. It is a more robust measure and easier to interpret compared to the MSE, especially in the presence of outliers.
 
-El R^2 es una medida que indica la proporción de la variación en la variable dependiente que es predecible a partir de las variables independientes. Un R^2 de 0.95 es bastante alto, lo que sugiere que el modelo es capaz de explicar el 95% de la variabilidad observada en ad01, indicando un buen ajuste.
+The R^2 is a measure that indicates the proportion of the variation in the dependent variable that is predictable from the independent variables. An R^2 of 0.95 is quite high, suggesting that the model is able to explain 95% of the observed variability in ad01, indicating a good fit.
 
-Min: 112, Max: 442, Range: 330, Mean: 268.19.  These statistics provide an overview of the distribution of the dependent variable ad01. The variation of ad01 between 112 and 442, with a range of 330, indicates a wide dispersion in the data. The mean of 268.19 reflects the average value of ad01 in the data set.
+Min: 114, Max: 438, Range: 324, Mean: 268.27.  These statistics provide an overview of the distribution of the dependent variable ad01. The variation of ad01 between 114 and 438, with a range of 324, indicates a wide dispersion in the data. The mean of 268.27 reflects the average value of ad01 in the data set.
 
 The relationship between the MSE and the rank of ad01 may offer additional insights. Although the MSE seems high, the rank of the dependent variable is also high. Therefore, an MSE of 248.47 can be considered reasonable in this context. Furthermore, the high value of R^2 suggests that the model is effective in predicting ad01 from the available independent variables.
 
@@ -283,27 +283,27 @@ print(f"Mean 'ad01': {ad01_mean}")
 
 The results obtained are as follows:
 
-MSE (Mean Squared Error): 109.31786687821625
+MSE (Mean Squared Error): 46.68
 
-MAE (Mean Absolute Error): 6.965185803489726
+MAE (Mean Absolute Error): 5.53
 
-R² (Coefficient of Determination): 0.9797012190502139
+R² (Coefficient of Determination): 0.99
 
-Rango de 'ad01': 330
+Rango de 'ad01': 324
 
-Media de 'ad01': 268.18548387096774
+Media de 'ad01': 268.27
 
 **Model evaluation considerations:**
 
 I adjusted the iterations (max_iter) from 500 to 1000, which has produced better results:
 
-The MSE has decreased considerably from 291.81 to 109.32. This reduction indicates that the mean squared error of the model predictions has been reduced, suggesting that the predictions are closer to the true values on average. This improvement in the MSE reflects a more accurate fit of the model to the data.
+The MSE has decreased considerably from 291.81 to 46.68. This reduction indicates that the mean squared error of the model predictions has been reduced, suggesting that the predictions are closer to the true values on average. This improvement in the MSE reflects a more accurate fit of the model to the data.
 
-The MAE has also decreased markedly from 12.58 to 6.97. This is an indicator that, on average, the model predictions now deviate less from the true value, improving the accuracy of the predictions. A lower MAE is particularly important in practical applications because it reflects less absolute error in the model predictions.
+The MAE has also decreased markedly from 12.58 to 5.53. This is an indicator that, on average, the model predictions now deviate less from the true value, improving the accuracy of the predictions. A lower MAE is particularly important in practical applications because it reflects less absolute error in the model predictions.
 
-The R² coefficient has increased from 0.946 to 0.980, which means that the model can now explain 98% of the variability in the dependent variable 'ad01', compared to 94.6% previously. This is an excellent level of fit, indicating that the model very effectively captures the underlying relationships between the independent variables and the dependent variable.
+The R² coefficient has increased from 0.946 to 0.99, which means that the model can now explain 98% of the variability in the dependent variable 'ad01', compared to 99% previously. This is an excellent level of fit, indicating that the model very effectively captures the underlying relationships between the independent variables and the dependent variable.
 
-Range of 'ad01' - 330; Mean of 'ad01' - 268.19: These values have not changed, as they are intrinsic properties of your data set. However, they serve as an important reference to contextualize the improvements in MSE and MAE. Especially, the improvement in MAE to less than 3% of the mean of 'ad01' is remarkably good.
+Range of 'ad01' - 324; Mean of 'ad01' - 268.27: These values have not changed, as they are intrinsic properties of your data set. However, they serve as an important reference to contextualize the improvements in MSE and MAE. Especially, the improvement in MAE to less than 3% of the mean of 'ad01' is remarkably good.
 
 In order not to extend too much I will show, with this second model, its behavior with one more type of food, the amount of food estimated for type Ad02 (Cereals and grains: rice, pasta in various forms, quinoa, oat flakes or grain, buckwheat, millet, breakfast cereals, whole grain cereals), as the target variable. For the rest of the food types the behavior of the application of this model has been very similar.
 
