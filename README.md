@@ -95,7 +95,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.metrics import mean_absolute_error, r2_score
 
 # Load the data from the CSV file from the specified path.
-data_path = 'https://github.com/marmartiher/ALFB/blob/main/NBancoAlimentos.csv'
+data_path = 'https://github.com/marmartiher/ALFB/blob/main/NBancoAlimentos01.csv'
 data = pd.read_csv(data_path)
 
 # Prepare the data by separating the independent variables (X) from the dependent variable (y).
