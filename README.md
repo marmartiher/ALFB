@@ -307,7 +307,110 @@ The range and mean values have not changed, as they are intrinsic properties of 
 
 In order not to be too long, I will show the behavior of these two models with another type of food, the amount of food estimated for type Ad02 (Cereals and grains: rice, pasta in various forms, quinoa, flaked or grain oats, buckwheat, millet, breakfast cereals, whole grain cereals), as the target variable. For the rest of the food types the behaviors of these models have been very similar.
 
+Applying the regression model in ad02 (just change the CSV file and the name of the dependent variable in the code), we get the following results:
 
+MSE: 7911.961360402739
+
+MAE: 64.35884951796959
+
+R^2: 0.9577771270155632
+
+Min: 710, Max: 2625, Rango: 1915, Media: 1518.8951612903227
+
+The MSE and MAE, although they seem high in comparison with the application to the ad01 food type, should be evaluated in the context of the range and variation on the ad02 scale.
+
+R^2 (Coefficient of Determination), gives a quite acceptable value 0.96, which explains 96% of the variability in the data, and can be considered very good.
+
+The range of 1915 with respect to the mean of 1518.9, together with the MSE and MAE values suggest a relatively low error.
+
+However, we can review the visualization of the data and predictions, looking graphically at the difference between predicted and actual values, and a scatter plot to see how the predictions line up against the actual values.
+
+For this we will use the following Python code:
+
+```
+
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.pipeline import Pipeline
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Prepare the data
+X = data.drop('ad02', axis=1)  # Variables independientes
+y = data['ad02']  # Variable dependiente
+
+# One-hot coding for categorical variables and passthrough coding for numeric variables
+preprocessor = ColumnTransformer(
+    transformers=[
+        ('cat', OneHotEncoder(handle_unknown='ignore'), ['barriada', 'campana'])
+    ], remainder='passthrough')
+
+# Create a pipeline with preprocessing and regression modeling
+model_pipeline = Pipeline(steps=[
+    ('preprocessor', preprocessor),
+    ('regressor', LinearRegression())
+])
+
+# Split data into training and test
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=X['campana'], random_state=42)
+
+# Adjust the model
+model_pipeline.fit(X_train, y_train)
+
+# Making predictions on the test set
+y_pred = model_pipeline.predict(X_test)
+
+# Calcula los residuos
+residuos = y_test - y_pred
+
+# Calculate the residuals
+plt.figure(figsize=(10, 6))
+sns.histplot(residuos, kde=True, bins=30)
+plt.title('Distribución de los Residuos')
+plt.xlabel('Residuos')
+plt.ylabel('Frecuencia')
+plt.show()
+
+# Scatter plot of predicted vs. actual values
+plt.figure(figsize=(10, 6))
+sns.scatterplot(x=y_test, y=y_pred)
+plt.plot([y.min(), y.max()], [y.min(), y.max()], 'k--', lw=2)  # Línea de perfecta predicción
+plt.title('Predicciones vs. Valores Reales')
+plt.xlabel('Valores Reales')
+plt.ylabel('Predicciones')
+plt.show()
+
+```
+
+![image of a Food Bank](/alfb004.jpg)
+
+The distribution of the residuals (difference between predicted and actual values) is centered around zero and resembles a normal distribution, which is a good indicator, as it suggests that the model does not significantly underestimate or overestimate the values of the dependent variable ad02, although some tails appear towards the negative and positive.
+
+![image of a Food Bank](/alfb005.jpg)
+
+This plot shows a strong correlation between the model predictions and the ral values, which confirms the high coefficient of R^2 at 0.96. The dashed line is the perfect prediction line, and you can see that the points cluster around this line.
+
+Both numerical and graphical results seem to show a good performance of the model.
+
+We now apply the neural network model to make predictions on the dependent variable ad02, using the same code as with variable ad01, changing only the data file and the variable name. Here I have raised the max_iter to 1,500 because it seems to offer better performance.
+
+The results are as follows:
+
+MSE (Mean Squared Error): 5026.75576939355
+
+MAE (Mean Absolute Error): 49.77632683773387
+
+R² (Coefficient of Determination): 0.9716024559785071
+
+Range 'ad02': 1915
+
+Mean 'ad02': 1518.8951612903227
+
+The performance (in R^2) is somewhat lower than that obtained with the target variable ad01, however, a performance of 0.97 is quite good.
 
 
 ### Second phase of the project
