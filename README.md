@@ -84,6 +84,7 @@ This model is appropriate because you want to know how several independent varia
 ```
 # Multiple linear regression
 
+# The necessary pandas and sklearn libraries are imported.
 import pandas as pd
 from sklearn.model_selection import train_test_split, StratifiedKFold
 from sklearn.linear_model import LinearRegression
@@ -93,21 +94,21 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import mean_absolute_error, r2_score
 
-# Load the data
+# Load the data from the CSV file from the specified path.
 data_path = 'https://github.com/marmartiher/ALFB/blob/main/NBancoAlimentos.csv'
 data = pd.read_csv(data_path)
 
-# Prepare the data
+# Prepare the data by separating the independent variables (X) from the dependent variable (y).
 X = data.drop('ad01', axis=1)  # Independent variables
 y = data['ad01']  # Dependent variable
 
-# One-hot encoding for categorical variables and passthrough for numerical variables
+# Coded the categorical variables 'slum' and 'bell' as One-Hot, and took the numeric variables unchanged.
 preprocessor = ColumnTransformer(
     transformers=[
         ('cat', OneHotEncoder(handle_unknown='ignore'), ['barriada', 'campana'])
     ], remainder='passthrough')
 
-# Create a pipeline with preprocessing and regression model
+# A pipeline including the preprocessing and the linear regression model is created.
 model_pipeline = Pipeline(steps=[
     ('preprocessor', preprocessor),
     ('regressor', LinearRegression())
@@ -120,26 +121,27 @@ model_pipeline = Pipeline(steps=[
 # Split the data into training and test sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=X['campana'], random_state=42)
 
-# Fit the model
+# Fit the model using the training data: model_pipeline.fit().
 model_pipeline.fit(X_train, y_train)
 
-# Make predictions on the test set
+# Predictions are made on the test set y_pred.
 y_pred = model_pipeline.predict(X_test)
 
-# Calculate and display the MSE
+# The mean squared error MSE of the predictions is calculated and displayed.
 mse = mean_squared_error(y_test, y_pred)
 print(f'MSE: {mse}')
 
-# Mean Absolute Error (MAE)
+# The mean absolute error MAE is calculated.
 mae = mean_absolute_error(y_test, y_pred)
 
-# Coefficient of Determination (R^2)
+# The coefficient of determination (R^2) is calculated.
 r2 = r2_score(y_test, y_pred)
 
+# Display the values of MAE and R^2.
 print(f'MAE: {mae}')
 print(f'R^2: {r2}')
 
-# Calculate the minimum and maximum of the dependent variable 'ad01'
+# The minimum and maximum of the dependent variable ad01 is calculated.
 ad01_min = data['ad01'].min()
 ad01_max = data['ad01'].max()
 
@@ -149,53 +151,51 @@ ad01_range = ad01_max - ad01_min
 # Calculate the mean of 'ad01'
 ad01_mean = data['ad01'].mean()
 
+# These previous values are displayed.
 print(f"Min: {ad01_min}, Max: {ad01_max}, Range: {ad01_range}, Mean: {ad01_mean}")
+
+# The necessary libraries for graphics are imported.
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Creating scatter plots
+# Prepare a list of independent variable names, excluding 'ad01'.
+independent_variables = data.columns.drop('ad01')
+
+# For each independent variable, create a scatter plot with 'ad01'.
+for var in independent_variables:
+    sns.scatterplot(data=data, x=var, y='ad01')
+    plt.title(f'Relationship between {var} and ad01')
+    plt.show()
 
 ```
 
-Explanation of the Python code used.
-
-- The necessary pandas and sklearn libraries are imported.
-   
-- Load the data from the CSV file from the specified path.
-
-- Prepare the data by separating the independent variables (X) from the dependent variable (y).
-
-- Coded the categorical variables 'slum' and 'bell' as One-Hot, and took the numeric variables unchanged.
-    
-- A pipeline including the preprocessing and the linear regression model is created.
-model_pipeline
-
-The data is split into training and test sets, ensuring that all 'bell' categories are represented in the test set. This is done to capture the year-to-year variability and the particularity of the Christmas campaign, since 'bell' is a categorical variable, we will use a splitting approach that maintains the proportion of each category.
-   
-- Fit the model using the training data: model_pipeline.fit().
-   
-- Predictions are made on the test set y_pred.
-   
-- The mean squared error MSE of the predictions is calculated and displayed.
-   
-- The mean absolute error MAE is calculated.
-   
-- The coefficient of determination (R^2) is calculated.
-   
-- Display the values of MAE and R^2.
-  
-- The minimum and maximum of the dependent variable ad01 is calculated.
-  
-- The mean of ad01 is calculated.
-
-- These previous values are displayed.
-
 The values shown in this model are as follows:
-MSE: 253.97316688451133 MAE: 14.2931864274963 R^2: 0.9753112465843767 Min: 177, Max: 562, Range: 385, Mean: 413.02.
 
-Model evaluation considerations:
+MSE: 248.4674999045983
 
-The values of ad01 range from 177 to 562, with a range of 385 units and a mean of approximately 413. This indicates that the dependent variable has considerable variability but is centered around a median value greater than 400.
+MAE: 11.28003393725271
 
-Given the 385-unit range of ad01, an MSE of approximately 254 means that the model predictions tend to deviate from the true value by an amount that is relatively small compared to the total variability of the data. This is indicative of a good model fit.
+R^2: 0.9525076234939224
 
-Given that the mean of ad01 is 413, an MAE of approximately 14.3 suggests that the model predictions, on average, deviate from the true value by only a few percent of the mean value of ad01. This is less than 4% of the mean, indicating high accuracy in the model predictions.
+Min: 112, Max: 442, Rango: 330, Media: 268.18548387096774
 
-Such a high coefficient of determination R^2 suggests that the model explains approximately 97.5% of the variability in the ad01 data, which is excellent. This indicates that the selected independent variables have a strong linear relationship with the amount of food to be distributed and that the model is very effective in predicting ad01.
+** Model evaluation considerations: **
 
+The MSE is a measure of the quality of an estimator; it is always non-negative, and smaller values indicate a better fit. An MSE of 248.47 suggests that, on average, the model predicts the dependent variable ad01 with a mean square error of 248.47. Since the MSE depends on the scale of the variable, it is useful to compare it with the range and mean of ad01 to get a better idea of its magnitude.
+
+The MAE is another measure of error that provides the mean absolute difference between observed and predicted values. An MAE of 11.28 indicates that, on average, the model predictions deviate by 11.28 units from the actual values. It is a more robust measure and easier to interpret compared to the MSE, especially in the presence of outliers.
+
+El R^2 es una medida que indica la proporción de la variación en la variable dependiente que es predecible a partir de las variables independientes. Un R^2 de 0.95 es bastante alto, lo que sugiere que el modelo es capaz de explicar el 95% de la variabilidad observada en ad01, indicando un buen ajuste.
+
+Min: 112, Max: 442, Range: 330, Mean: 268.19.  These statistics provide an overview of the distribution of the dependent variable ad01. The variation of ad01 between 112 and 442, with a range of 330, indicates a wide dispersion in the data. The mean of 268.19 reflects the average value of ad01 in the data set.
+
+The relationship between the MSE and the rank of ad01 may offer additional insights. Although the MSE seems high, the rank of the dependent variable is also high. Therefore, an MSE of 248.47 can be considered reasonable in this context. Furthermore, the high value of R^2 suggests that the model is effective in predicting ad01 from the available independent variables.
+
+The results indicate a fairly effective linear regression model for predicting ad01, with a fit that explains a large proportion of the variability in the dependent variable. Interpreting these results in the specific context of the data (e.g., the meaning of ad01, neighborhood, and bell) may provide further insights on how to improve the model.
+
+Visualizing the relationship between each independent variable and ad01 using scatter plots can help identify linear or nonlinear patterns, potential outliers, and whether the relationship between variables is direct or inverse. This can be useful for future model adjustments or to identify variables that might need transformations.
+
+Podemos ver que, por ejemplo, la relación entre los bebes y la cantidad de alimentos ad01, hay una relación positiva entre el aumento de bebés y el aumento del tipo de alimento ad01. Lo cual es lógico en este caso, ya que el tipo de alimento ad01 engloba alimentos destinados a bebés. La gráfica muestra distintos grupos de puntos lo que hace pensar en subgrupos dentro de los datos, pero esto, probablemente, es debido a que en ciertos periodos del año (campañas de reparto de alimentos) suele haber más demanda de alimentos en general y, por tanto, de este tipo de alimentos también.
+
+![image of a Food Bank](/alfb001.jpg)
