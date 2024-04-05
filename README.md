@@ -341,7 +341,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Upload data
-data_path = 'D:/_Curso Inteligencia Artificial/BuildingAI/BancoAlimentos02.csv'
+data_path = 'https://github.com/marmartiher/ALFB/blob/main/BancoAlimentos02.csv'
 data = pd.read_csv(data_path)
 
 # Prepare the data
