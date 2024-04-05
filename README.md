@@ -224,7 +224,8 @@ import numpy as np
 data_path = 'https://github.com/marmartiher/ALFB/blob/main/BancoAlimentos01.csv'
 data = pd.read_csv(data_path)
 
-# Prepare the data. The variable 'camp' is stratified so that it enters into each fold proportionally, since the amount of food to be distributed differs significantly depending on the season of the year.
+# Prepare the data. The variable 'camp' is stratified so that it enters into each fold proportionally,
+#   since the amount of food to be distributed differs significantly depending on the season of the year.
 X = data.drop('ad01', axis=1)  # Independent variables
 y = data['ad01']  # Dependent variable
 groups = data['camp']  # Variable for stratification
