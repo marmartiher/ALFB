@@ -27,6 +27,8 @@ My personal motivation comes from the voluntary participation in the work of a f
 
 In the project I am presenting for the Building AI course, I will develop only the first stage.
 
+--------------------------------------
+
 ## Data and AI techniques
 
 The data sources are based on the historical data collected from previous campaigns for food collection and distribution: lists of food collected or purchased, lists of food distributed, lists of beneficiary associations, lists of volunteers, etc. These data are currently collected in spreadsheets, without personal data. 
@@ -471,6 +473,8 @@ In a second phase of the project, an App will be created using NLP techniques to
  
 The App and chatbot will be developed as separate interacting components, to facilitate flexibility to develop and update each component independently, and to make the chatbot also usable on other channels besides the app, such as websites (corporate website) or messaging platforms like WhatsApp or Telegram.
 
+--------------------------------------
+
 ## How is it used
 
 ### First phase of the project:
@@ -765,6 +769,8 @@ Collaboration with neighborhood associations can be extremely beneficial to the 
 
 - Pilot Projects: Participate in the implementation of pilot projects to test new ideas or approaches to food distribution, data collection, or app functionality.
 
+--------------------------------------
+
 ## Challenges
 
 Storage, although it could possibly be mechanized, will not be addressed, as the collaborating volunteers will be well trained and there is a system of storage by expiration dates and type of food. Using robots for storage would be too expensive and disproportionate for a local food bank.
@@ -783,11 +789,15 @@ However, through an interactive corporate website, it is possible to answer many
 
 As for the challenges of the operation of the technological solutions in the different phases of the project, they have already been included in the previous point, when developing the characteristics of these solutions.
 
+--------------------------------------
+
 ## What next
 
 I believe that this project is ambitious and could be extended to any local or even national food bank, if the expected results are achieved in the different phases.
 
 Later phases of the project could be undertaken to improve and mechanize other aspects of management, and to improve the feedback of the phases that are consolidated, as long as the technical and material means are available to implement the tasks described.
+
+--------------------------------------
 
 ## Acknowledgments
 
