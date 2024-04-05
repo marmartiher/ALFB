@@ -6,7 +6,7 @@ First phase: Creation of machine learning models based on historical data from a
 
 Second phase: Automation of a local Food Bank, using an App integrated with a ChatBot with NLP, to manage the food demand of needy families.
 
-![image of a Food Bank](/alfb000.jpg)
+![image of a Food Bank](/alfb00.png)
 
 ## Background
 A food bank is a volunteer-based organization whose objective is to recover food, especially non-perishable food, from companies, supermarkets and individuals, through collaborating associations, for subsequent free distribution to people at risk of social exclusion. 
