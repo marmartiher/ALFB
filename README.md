@@ -83,23 +83,21 @@ I will start with multiple linear regression model, using as dependent variable 
 
 This model is appropriate because you want to know how several independent variables (predictors) influence a continuous dependent variable (the amount of food to be distributed in 'adxx'). In addition, the multiple linear regression model can handle both numerical variables (such as babies, children, adults, seniors, unemployment, users, ac01) and categorical variables (such as neighborhood and bell), although categorical variables must be properly coded before including them in the model.
 
-**Multiple linear regression Model**
+**Multiple linear regression model with cross-validation**
 
 ```
-# Multiple linear regression
 
 # The necessary pandas and sklearn libraries are imported.
 import pandas as pd
-from sklearn.model_selection import train_test_split, StratifiedKFold
 from sklearn.linear_model import LinearRegression
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_squared_error, mean_absolute_error, make_scorer, r2_score
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
-from sklearn.metrics import mean_absolute_error, r2_score
+from sklearn.model_selection import KFold, cross_validate
 
 # Load the data from the CSV file from the specified path.
-data_path = 'https://github.com/marmartiher/ALFB/blob/main/NBancoAlimentos01.csv'
+data_path = 'https://github.com/marmartiher/ALFB/blob/main/BancoAlimentos01.csv'
 data = pd.read_csv(data_path)
 
 # Prepare the data by separating the independent variables (X) from the dependent variable (y).
@@ -109,7 +107,7 @@ y = data['ad01']  # Dependent variable
 # Coded the categorical variables 'slum' and 'bell' as One-Hot, and took the numeric variables unchanged.
 preprocessor = ColumnTransformer(
     transformers=[
-        ('cat', OneHotEncoder(handle_unknown='ignore'), ['barriada', 'campana'])
+        ('cat', OneHotEncoder(handle_unknown='ignore'), ['barriada', 'ano', 'camp'])
     ], remainder='passthrough')
 
 # A pipeline including the preprocessing and the linear regression model is created.
@@ -118,51 +116,25 @@ model_pipeline = Pipeline(steps=[
     ('regressor', LinearRegression())
 ])
 
-# Split the data ensuring all 'campana' groups are represented in the test set
-# This is done to capture the annual variability and the particularity of the winter or Christmas campaign
-# Since 'campana' is a categorical variable, we will use a splitting approach that maintains the proportion of each category
+# Set up cross validation (non-stratified)
+cv = KFold(n_splits=5, shuffle=True, random_state=42)
 
-# Split the data into training and test sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=X['campana'], random_state=42)
+# Define evaluation metrics
+scoring = {'MSE': make_scorer(mean_squared_error, greater_is_better=False),
+           'MAE': make_scorer(mean_absolute_error, greater_is_better=False),
+           'R2': 'r2'}
 
-# Fit the model using the training data: model_pipeline.fit().
-model_pipeline.fit(X_train, y_train)
+# Execute cross validation
+cv_results = cross_validate(model_pipeline, X, y, cv=cv, scoring=scoring)
 
-# Predictions are made on the test set y_pred.
-y_pred = model_pipeline.predict(X_test)
+# Show results
+print(f"MSE: {cv_results['test_MSE'].mean()}")
+print(f"MAE: {cv_results['test_MAE'].mean()}")
+print(f"R^2: {cv_results['test_R2'].mean()}")
 
-# The mean squared error MSE of the predictions is calculated and displayed.
-mse = mean_squared_error(y_test, y_pred)
-print(f'MSE: {mse}')
-
-# The mean absolute error MAE is calculated.
-mae = mean_absolute_error(y_test, y_pred)
-
-# The coefficient of determination (R^2) is calculated.
-r2 = r2_score(y_test, y_pred)
-
-# Display the values of MAE and R^2.
-print(f'MAE: {mae}')
-print(f'R^2: {r2}')
-
-# The minimum and maximum of the dependent variable ad01 is calculated.
-ad01_min = data['ad01'].min()
-ad01_max = data['ad01'].max()
-
-# Calculate the range (difference between the maximum and minimum)
-ad01_range = ad01_max - ad01_min
-
-# Calculate the mean of 'ad01'
-ad01_mean = data['ad01'].mean()
-
-# These previous values are displayed.
-print(f"Min: {ad01_min}, Max: {ad01_max}, Range: {ad01_range}, Mean: {ad01_mean}")
-
-# The necessary libraries for graphics are imported.
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-# Creating scatter plots
 # Prepare a list of independent variable names, excluding 'ad01'.
 independent_variables = data.columns.drop('ad01')
 
@@ -172,39 +144,51 @@ for var in independent_variables:
     plt.title(f'Relationship between {var} and ad01')
     plt.show()
 
+# Calculates the minimum and maximum of the dependent variable 'ad01'.
+ad01_min = data['ad01'].min()
+ad01_max = data['ad01'].max()
+
+# Calculates the range (difference between the maximum and minimum)
+ad01_range = ad01_max - ad01_min
+
+# Calculates the mean of 'ad01'.
+ad01_mean = data['ad01'].mean()
+
+print(f"Min: {ad01_min}, Max: {ad01_max}, Rango: {ad01_range}, Media: {ad01_mean}")
+
 ```
 
 The values shown in this model are as follows:
 
-MSE: 281.82
+MSE: 176.42885071471335
 
-MAE: 12.86
+MAE: 9.87150146484375
 
-R^2: 0.9459
+R^2: 0.9744919743946632
 
-Min: 118, Max: 439, Rango: 321, Media: 267.5
+Min: 113, Max: 438, Rango: 325, Media: 267.9516129032258
 
 **Model evaluation considerations:**
 
-The MSE is a measure of the quality of an estimator; it is always non-negative, and smaller values indicate a better fit. An MSE of 282 suggests that, on average, the model predicts the dependent variable ad01 with a mean square error of 238.4. Since the MSE depends on the scale of the variable, it is useful to compare it with the range and mean of ad01 to get a better idea of its magnitude.
+The MSE is a measure of the quality of an estimator; it is always non-negative, and smaller values indicate a better fit. An MSE of 176 suggests that, on average, the model predicts the dependent variable ad01 with a mean square error of 176. Since the MSE depends on the scale of the variable, it is useful to compare it with the range and mean of ad01 to get a better idea of its magnitude.
 
-The MAE is another measure of error that provides the mean absolute difference between observed and predicted values. An MAE of 12.9 indicates that, on average, the model predictions deviate by 12.9 units from the actual values. It is a more robust measure and easier to interpret compared to the MSE, especially in the presence of outliers.
+The MAE is another measure of error that provides the mean absolute difference between observed and predicted values. An MAE of 9.9 indicates that, on average, the model predictions deviate by 9.9 units from the actual values. It is a more robust measure and easier to interpret compared to the MSE, especially in the presence of outliers.
 
-The R^2 is a measure that indicates the proportion of the variation in the dependent variable that is predictable from the independent variables. An R^2 of 0.95 is quite high, suggesting that the model is able to explain 95% of the observed variability in ad01, indicating a good fit.
+The R^2 is a measure that indicates the proportion of the variation in the dependent variable that is predictable from the independent variables. An R^2 of 0.97 is quite high, suggesting that the model is able to explain 95% of the observed variability in ad01, indicating a good fit.
 
-Min: 118, Max: 439, Range: 321, Mean: 268.  These statistics provide an overview of the distribution of the dependent variable ad01. The variation of ad01 between 118 and 439, with a range of 321, indicates a wide dispersion in the data. The mean of 268 reflects the average value of ad01 in the data set.
+Min: 113, Max: 438, Range: 325, Mean: 268.  These statistics provide an overview of the distribution of the dependent variable ad01. The variation of ad01 between 113 and 438, with a range of 325, indicates a wide dispersion in the data. The mean of 268 reflects the average value of ad01 in the data set.
 
-The relationship between the MSE and the rank of ad01 may offer additional insights. Although the MSE seems high, the rank of the dependent variable is also high. Therefore, an MSE of 242 can be considered reasonable in this context. Furthermore, the high value of R^2 suggests that the model is effective in predicting ad01 from the available independent variables.
+The relationship between the MSE and the rank of ad01 may offer additional insights. Although the MSE seems high, the rank of the dependent variable is also high. Therefore, an MSE of 176 can be considered reasonable in this context. Furthermore, the high value of R^2 suggests that the model is effective in predicting ad01 from the available independent variables.
 
 The results indicate a fairly effective linear regression model for predicting ad01, with a fit that explains a large proportion of the variability in the dependent variable. Interpreting these results in the specific context of the data (e.g., the meaning of ad01, neighborhood, and bell) may provide further insights on how to improve the model.
 
 Visualizing the relationship between each independent variable and ad01 using scatter plots can help identify linear or nonlinear patterns, potential outliers, and whether the relationship between variables is direct or inverse. This can be useful for future model adjustments or to identify variables that might need transformations.
 
-We can see that, for example, the relationship between babies and the amount of food ad01, there is a positive relationship between the increase in babies and the increase in food type ad01. Which is logical in this case, since food type ad01 encompasses food intended for babies. The graph shows different groups of points, which suggests that there are subgroups within the data, but this is probably due to the fact that at certain times of the year (food distribution campaigns) there is usually more demand for food in general and, therefore, for this type of food as well.
+We can see that, for example, in the relationship between babies and the amount of food ad01, there is a positive relationship between the increase in babies and the increase in food type ad01. Which is logical in this case, since food type ad01 encompasses food intended for babies. The graph shows different groups of points, which suggests that there are subgroups within the data, but this is probably due to the fact that at certain times of the year (food distribution campaigns) there is usually more demand for food in general and, therefore, for this type of food as well.
 
 ![image of a Food Bank](/alfb001.jpg)
 
-In another example of the relationship between the independent variable campaign and the type of food ad01, it can be seen how in the winter (AAAAI format) and autumn (AAAAO format) campaigns there is a greater distribution of this type of food, especially in the winter campaign, while the other two seasonal campaigns are more equal in the demand for this type of food and below those mentioned above.
+In another example of the relationship between the independent variable campaign and the type of food ad01, it can be seen how in the winter (I format) and autumn (O format) campaigns there is a greater distribution of this type of food, especially in the winter campaign, while the other two seasonal campaigns are more equal in the demand for this type of food and below those mentioned above.
 
 ![image of a Food Bank](/alfb002.jpg)
 
@@ -239,7 +223,7 @@ X = data.drop('ad01', axis=1)  # Variables independientes
 y = data['ad01']  # Variable dependiente
 
 # Identify categorical variables for one-hot coding and numerical variables for standardization.
-categorical_features = ['barriada', 'campana']
+categorical_features = ['barriada', 'ano', 'camp']
 numeric_features = ['bebes', 'ninos', 'adultos', 'seniors', 'desempleo', 'usuarios', 'ac01']
 
 # Create the preprocessor with OneHotEncoder for categorical variables and StandardScaler for numeric variables.
