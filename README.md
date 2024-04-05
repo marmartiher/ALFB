@@ -198,96 +198,104 @@ The relationship between users and the type of food demanded, ad01, is positive 
 
 I have also tried the SVR model, but it gives very poor forecasts, and I have not been able to adjust it.
 
-**Neural Network Model**
+**Neural Network Model with cross-validation**
 
 Another model that has given good results has been a neural network model. Below I show the code in Python language:
 
 ```
 # Neural Network Model
 
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import StratifiedKFold, cross_validate
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from sklearn.neural_network import MLPRegressor
 import pandas as pd
 import numpy as np
 
 # Load data
-data_path = 'https://github.com/marmartiher/ALFB/blob/main/NBancoAlimentos01.csv'
+data_path = 'https://github.com/marmartiher/ALFB/blob/main/BancoAlimentos01.csv'
 data = pd.read_csv(data_path)
 
-# Prepare the data
-X = data.drop('ad01', axis=1)  # Variables independientes
-y = data['ad01']  # Variable dependiente
+# Prepare the data. The variable 'camp' is stratified so that it enters into each fold proportionally, since the amount of food to be distributed differs significantly depending on the season of the year.
+X = data.drop('ad01', axis=1)  # Independent variables
+y = data['ad01']  # Dependent variable
+groups = data['camp']  # Variable for stratification
 
-# Identify categorical variables for one-hot coding and numerical variables for standardization.
+# Identify categorical and numerical variables
 categorical_features = ['barriada', 'ano', 'camp']
 numeric_features = ['bebes', 'ninos', 'adultos', 'seniors', 'desempleo', 'usuarios', 'ac01']
 
-# Create the preprocessor with OneHotEncoder for categorical variables and StandardScaler for numeric variables.
+# Create the preprocessor
 preprocessor = ColumnTransformer(
     transformers=[
         ('onehot', OneHotEncoder(handle_unknown='ignore'), categorical_features),
         ('scaler', StandardScaler(), numeric_features)
     ])
 
-# Create a pipeline with preprocessing and a neural network model
+# Create a pipeline with the preprocessor and the neural network model
 model_pipeline = Pipeline(steps=[
     ('preprocessor', preprocessor),
     ('regressor', MLPRegressor(hidden_layer_sizes=(64, 64), activation='relu', random_state=42, max_iter=1000))
 ])
 
-# Split the data into training and test
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+# Stratification based on 'camp'.
+stratified_cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
 
-# Training the model
-model_pipeline.fit(X_train, y_train)
+# Configure and perform cross validation
+# Note: StratifiedKFold is normally used for classification. To use it for regression, 'camp' must be categorical.
+cv_results = cross_validate(model_pipeline, X, y, cv=stratified_cv.split(X, groups),
+                            scoring=['neg_mean_squared_error', 'neg_mean_absolute_error', 'r2'],
+                            return_train_score=False)
 
-# Making predictions
-y_pred = model_pipeline.predict(X_test)
+# Calculate metric averages
+mse = -cv_results['test_neg_mean_squared_error'].mean()
+mae = -cv_results['test_neg_mean_absolute_error'].mean()
+r2 = cv_results['test_r2'].mean()
 
-# Evaluate the model
-mse = mean_squared_error(y_test, y_pred)
-mae = mean_absolute_error(y_test, y_pred)
-r2 = r2_score(y_test, y_pred)
-
-# Calculate the range and mean of 'ad01'.
-ad01_range = y.max() - y.min()
-ad01_mean = y.mean()
-
-# Show results
 print(f"MSE (Mean Squared Error): {mse}")
 print(f"MAE (Mean Absolute Error): {mae}")
 print(f"R² (Coefficient of Determination): {r2}")
-print(f"Range 'ad01': {ad01_range}")
-print(f"Mean 'ad01': {ad01_mean}")
+
+# Calculates the minimum and maximum of the dependent variable 'ad01'.
+ad01_min = data['ad01'].min()
+ad01_max = data['ad01'].max()
+
+# Calculates the range (difference between the maximum and minimum)
+ad01_range = ad01_max - ad01_min
+
+# Calculates the average of 'ad01'.
+ad01_mean = data['ad01'].mean()
+
+print(f"Min: {ad01_min}, Max: {ad01_max}, Rango: {ad01_range}, Media: {ad01_mean}")
+
 ```
 
 The results obtained are as follows:
 
-MSE (Mean Squared Error): 80.34
+MSE (Mean Squared Error): 96.03013880047084
 
-MAE (Mean Absolute Error): 5.86
+MAE (Mean Absolute Error): 7.740741005126234
 
-R² (Coefficient of Determination): 0.98
+R² (Coefficient of Determination): 0.9819430725498952
 
-Rango de 'ad01': 321
-
-Media de 'ad01': 267.5
+Min: 113, Max: 438, Rango: 325, Media: 267.9516129032258
 
 **Model evaluation considerations:**
 
-I adjusted the iterations (max_iter) from 500 to 1000, which has produced better results:
+MSE (Mean Squared Error) of 96.0301: This metric indicates the mean squared error between model predictions and actual values. The MSE is sensitive to outliers because it squares the errors. In the context of the dependent variable (ad01) which has a range of 325 and a mean of approximately 267.95, an MSE of 96 seems to indicate that the model has a good degree of accuracy, although this metric alone does not give us a complete picture without considering MAE and R².
 
-The MSE has decreased considerably from 291.81 to 80.35. This reduction indicates that the mean squared error of the model predictions has been reduced, suggesting that the predictions are closer to the true values on average. This improvement in the MSE reflects a more accurate fit of the model to the data.
+MAE (Mean Absolute Error) of 7.7407: The MAE measures the average of the absolute errors between predictions and actual values. An MAE of 7.74, given the range and mean of ad01, suggests that the model predictions are fairly accurate in absolute terms. This value is quite low, especially considering the scale of the target variable.
 
-The MAE has also decreased markedly from 12.58 to 5.86. This is an indicator that, on average, the model predictions now deviate less from the true value, improving the accuracy of the predictions. A lower MAE is particularly important in practical applications because it reflects less absolute error in the model predictions.
+R² (Coefficient of Determination) of 0.9819: An R² value close to 1 indicates that the model explains a large proportion of the variability in the data. An R² of 0.9819 is excellent, suggesting that the model is highly effective in capturing the relationship between the independent variables and the dependent variable.
 
-The R² coefficient has increased from 0.946 to 0.985, which means that the model can now explain 98% of the variability in the dependent variable 'ad01', compared to 95% previously. This is an excellent level of fit, indicating that the model very effectively captures the underlying relationships between the independent variables and the dependent variable.
+Rank of 'ad01' of 325, with a minimum of 113, a maximum of 438, and a mean of approximately 267.95: These values provide context about the distribution and scale of the variable being predicted. The fact that the MAE is significantly less than the range indicates that the model, on average, predicts the values of ad01 with relatively small error.
 
-The range and mean values have not changed, as they are intrinsic properties of your data set. However, they serve as an important reference to contextualize the improvements in MSE and MAE. Especially, the improvement in MAE which is remarkably good.
+This neural network model appears to perform well in the prediction task. The low MAE and MSE, together with a very high R², indicate that the model is able to make accurate predictions and effectively captures the variability of ad01.
+
+However, it is important to also consider the possibility of overfitting, especially with complex models such as neural networks. On the other hand, a neural network model with cross-validation requires computational power, so in this case, given the small difference in results with a regression model, it may be appropriate to opt for the linear regression model.
+
+------------------------
 
 In order not to be too long, I will show the behavior of these two models with another type of food, the amount of food estimated for type Ad02 (Cereals and grains: rice, pasta in various forms, quinoa, flaked or grain oats, buckwheat, millet, breakfast cereals, whole grain cereals), as the target variable. For the rest of the food types the behaviors of these models have been very similar.
 
