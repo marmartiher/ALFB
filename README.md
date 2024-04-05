@@ -15,9 +15,13 @@ The management of a food bank is complex, so sometimes resources are wasted (foo
 
 I believe that, in order to tackle this project, it would be necessary to do it in two stages: 
 
-First stage: With the historical data that we currently have in spreadsheets, we can make a prediction of the food needed for distribution in each campaign, through automatic training, to improve the use of resources, avoiding the accumulation of surplus in warehouse, the expiration of food or the increase of spoiled or damaged food for various reasons, making a more efficient food distribution.
+**_First phase:_**
 
-Second stage: Once the results of the first stage have been seen, in order to improve the system, an integrated food management system could be implemented in which a specialized App integrated with a chatbot would play an important role, using predictive data from automatic training based on historical data on inventory, storage, requests, food distribution and volunteer management; as well as communication with the parties involved with valuable information (recipients, donors, neighborhood associations, volunteers, etc.).
+With the historical data that we currently have in spreadsheets, we can make a prediction of the food needed for distribution in each campaign, through automatic training, to improve the use of resources, avoiding the accumulation of surplus in warehouse, the expiration of food or the increase of spoiled or damaged food for various reasons, making a more efficient food distribution.
+
+**_Second phase:_**
+
+Once the results of the first stage have been seen, in order to improve the system, an integrated food management system could be implemented in which a specialized App integrated with a chatbot would play an important role, using predictive data from automatic training based on historical data on inventory, storage, requests, food distribution and volunteer management; as well as communication with the parties involved with valuable information (recipients, donors, neighborhood associations, volunteers, etc.).
 
 My personal motivation comes from the voluntary participation in the work of a food bank. This issue is important because it is about optimizing resources for families living in poverty or at risk of social exclusion.
 
