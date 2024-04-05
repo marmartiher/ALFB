@@ -321,15 +321,20 @@ For this we will use the following Python code:
 
 ```
 
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import cross_validate
 from sklearn.linear_model import LinearRegression
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score, make_scorer
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.pipeline import Pipeline
+import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+
+# Upload data
+data_path = 'D:/_Curso Inteligencia Artificial/BuildingAI/BancoAlimentos02.csv'
+data = pd.read_csv(data_path)
 
 # Prepare the data
 X = data.drop('ad02', axis=1)  # Variables independientes
@@ -338,7 +343,7 @@ y = data['ad02']  # Variable dependiente
 # One-hot coding for categorical variables and passthrough coding for numeric variables
 preprocessor = ColumnTransformer(
     transformers=[
-        ('cat', OneHotEncoder(handle_unknown='ignore'), ['barriada', 'campana'])
+        ('cat', OneHotEncoder(handle_unknown='ignore'), ['barriada', 'ano', 'camp'])
     ], remainder='passthrough')
 
 # Create a pipeline with preprocessing and regression modeling
@@ -347,19 +352,27 @@ model_pipeline = Pipeline(steps=[
     ('regressor', LinearRegression())
 ])
 
-# Split data into training and test
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=X['campana'], random_state=42)
+# Set up cross validation
+cv_results = cross_validate(model_pipeline, X, y, cv=5,
+                            scoring={'MSE': make_scorer(mean_squared_error, greater_is_better=False),
+                                     'MAE': make_scorer(mean_absolute_error, greater_is_better=False),
+                                     'R2': 'r2'})
 
-# Adjust the model
-model_pipeline.fit(X_train, y_train)
+# Print the results of the cross validation
+print(f"MSE (Mean Squared Error): {-np.mean(cv_results['test_MSE'])}")
+print(f"MAE (Mean Absolute Error): {-np.mean(cv_results['test_MAE'])}")
+print(f"R² (Coefficient of Determination): {np.mean(cv_results['test_R2'])}")
 
-# Making predictions on the test set
-y_pred = model_pipeline.predict(X_test)
+# Train the model on the whole dataset for visualization
+model_pipeline.fit(X, y)
 
-# Calcula los residuos
-residuos = y_test - y_pred
+# Make predictions on the entire data set
+y_pred = model_pipeline.predict(X)
 
 # Calculate the residuals
+residuos = y - y_pred
+
+# Visualization of waste
 plt.figure(figsize=(10, 6))
 sns.histplot(residuos, kde=True, bins=30)
 plt.title('Distribución de los Residuos')
@@ -369,7 +382,7 @@ plt.show()
 
 # Scatter plot of predicted vs. actual values
 plt.figure(figsize=(10, 6))
-sns.scatterplot(x=y_test, y=y_pred)
+sns.scatterplot(x=y, y=y_pred)
 plt.plot([y.min(), y.max()], [y.min(), y.max()], 'k--', lw=2)  # Línea de perfecta predicción
 plt.title('Predicciones vs. Valores Reales')
 plt.xlabel('Valores Reales')
@@ -378,31 +391,33 @@ plt.show()
 
 ```
 
-![image of a Food Bank](/alfb004.jpg)
+![image of a Food Bank](/alfb004.png)
 
-The distribution of the residuals (difference between predicted and actual values) is centered around zero and resembles a normal distribution, which is a good indicator, as it suggests that the model does not significantly underestimate or overestimate the values of the dependent variable ad02, although some tails appear towards the negative and positive.
+The distribution of the residuals resembles a normal distribution, centered around zero, which is a good indicator that the model does not have a systematic bias.
 
-![image of a Food Bank](/alfb005.jpg)
+The symmetry of the distribution suggests that the model does not have a tendency to consistently overestimate or underestimate ad02 values.
 
-This plot shows a strong correlation between the model predictions and the ral values, which confirms the high coefficient of R^2 at 0.96. The dashed line is the perfect prediction line, and you can see that the points cluster around this line.
+The predictions appear to align well with the actual values, as the points follow a diagonal line from the lower left corner to the upper right corner.
 
-Both numerical and graphical results seem to show a good performance of the model.
+The presence of this diagonal line indicates a strong correlation between the predictions and the actual values, which is consistent with a high R².
 
-We now apply the neural network model to make predictions on the dependent variable ad02, using the same code as with variable ad01, changing only the data file and the variable name. Here I have raised the max_iter to 1,500 because it seems to offer better performance.
+There does not appear to be significant variability in the errors over the range of predicted values, which means that the model is homo-chaotic (errors have constant variance).
+
+The numerical metrics indicate a high performing model.
+
+We now apply the neural network model to make predictions on the dependent variable ad02, using the same code as with variable ad01, changing only the data file and the variable name. Here I have raised the max_iter to 2,000 because it seems to offer better performance.
 
 The results are as follows:
 
-MSE (Mean Squared Error): 5026.75576939355
+MSE (Mean Squared Error): 2205.2175699536388
 
-MAE (Mean Absolute Error): 49.77632683773387
+MAE (Mean Absolute Error): 35.803643542990315
 
-R² (Coefficient of Determination): 0.9716024559785071
+R² (Coefficient of Determination): 0.9880647883024032
 
-Range 'ad02': 1915
+Min: 707, Max: 2623, Rango: 1916, Media: 1519.1854838709678
 
-Mean 'ad02': 1518.8951612903227
-
-The performance (in R^2) is somewhat lower than that obtained with the target variable ad01, however, a performance of 0.97 is quite good.
+The performance (in R^2) is somewhat lower than that obtained with the target variable ad01, however, a performance of 0.99 is quite good.
 
 
 ### Second phase of the project
