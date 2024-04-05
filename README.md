@@ -518,7 +518,7 @@ As discussed, there are three points of technological support for the developmen
 
 - A corporate website, also for support, information and web presence.
 
-![image of a Food Bank](/alfb006.jpg)
+![image of a Food Bank](/alfb006.png)
 
 We will develop the characteristics of each of these tools.
 
