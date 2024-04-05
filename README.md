@@ -41,15 +41,16 @@ In order to be able to apply a machine learning model, a data integration has be
 The names of the different categories or variables are in Spanish language, because the project is applied with data collected locally, in Spain.
 Although in a second phase of the project we will be able to have more quality data over time, the data available at this time are as follows:
 1. neighborhood (barriada) indicative: Each food collection and distribution campaign is done by neighborhoods, with the help of the neighborhood associations.
-2. Campaign (campana): Currently there are four annual campaigns that coincide approximately with the seasons of the year.
-3. Population from zero to two years old (bebes): babies between zero and two years old in each zone or neighborhood.
-4. Population from 3 to 10 years old (ninos): Population between three and ten years old.
-5. Population aged 11 to 65 years (adultos): Population aged between eleven and sixty-five years.
-6. Population over 65 years old (seniors).
-7. Unemployment rate (desempleo): Unemployment rate by neighborhood in percent.
-8. Users served (usuarios): Number of people served in each neighborhood and campaign.
-9. Type of food unserviceable due to various causes, of food type A01 (ac01 = expired food type A01).
-10. Distributed food type A01 (ad01 = distributed food type A01): Quantity of food type coded A01 distributed in units (packages, cans, UTH). All foods are packaged, canned or bottled, and each package was noted as a unit, regardless of weight or size.
+2. Year (ano) with format YYYYY.
+3. Campaign (camp) with format (P, V, O, I) corresponding to the 4 campaigns in the seasons of the year.
+4. Population from zero to two years old (bebes): babies between zero and two years old in each zone or neighborhood.
+5. Population from 3 to 10 years old (ninos): Population between three and ten years old.
+6. Population aged 11 to 65 years (adultos): Population aged between eleven and sixty-five years.
+7. Population over 65 years old (seniors).
+8. Unemployment rate (desempleo): Unemployment rate by neighborhood in percent.
+9. Users served (usuarios): Number of people served in each neighborhood and campaign.
+10. Type of food unserviceable due to various causes, of food type A01 (ac01 = expired food type A01).
+11. Distributed food type A01 (ad01 = distributed food type A01): Quantity of food type coded A01 distributed in units (packages, cans, UTH). All foods are packaged, canned or bottled, and each package was noted as a unit, regardless of weight or size.
 
 Food types are coded as follows:
 
