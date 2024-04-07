@@ -161,7 +161,7 @@ ad01_range = ad01_max - ad01_min
 # Calculates the mean of 'ad01'.
 ad01_mean = data['ad01'].mean()
 
-print(f"Min: {ad01_min}, Max: {ad01_max}, Rango: {ad01_range}, Media: {ad01_mean}")
+print(f"Min: {ad01_min}, Max: {ad01_max}, Range: {ad01_range}, Mean: {ad01_mean}")
 
 ```
 
@@ -173,7 +173,7 @@ MAE: 9.87150146484375
 
 R^2: 0.9744919743946632
 
-Min: 113, Max: 438, Rango: 325, Media: 267.9516129032258
+Min: 113, Max: 438, Range: 325, Mean: 267.9516129032258
 
 **Model evaluation considerations:**
 
@@ -224,8 +224,10 @@ import numpy as np
 data_path = 'https://github.com/marmartiher/ALFB/blob/main/BancoAlimentos01.csv'
 data = pd.read_csv(data_path)
 
-# Prepare the data. The variable 'camp' is stratified so that it enters into each fold proportionally,
-#   since the amount of food to be distributed differs significantly depending on the season of the year.
+# Prepare the data. The variable 'camp' is stratified so
+#   that it enters into each fold proportionally,
+#   since the amount of food to be distributed differs
+#   significantly depending on the season of the year.
 X = data.drop('ad01', axis=1)  # Independent variables
 y = data['ad01']  # Dependent variable
 groups = data['camp']  # Variable for stratification
@@ -244,17 +246,19 @@ preprocessor = ColumnTransformer(
 # Create a pipeline with the preprocessor and the neural network model
 model_pipeline = Pipeline(steps=[
     ('preprocessor', preprocessor),
-    ('regressor', MLPRegressor(hidden_layer_sizes=(64, 64), activation='relu', random_state=42, max_iter=1000))
+    ('regressor', MLPRegressor(hidden_layer_sizes=(64, 64), activation='relu',
+    random_state=42, max_iter=1000))
 ])
 
 # Stratification based on 'camp'.
 stratified_cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
 
 # Configure and perform cross validation
-# Note: StratifiedKFold is normally used for classification. To use it for regression, 'camp' must be categorical.
+# Note: StratifiedKFold is normally used for classification.
+# To use it for regression, 'camp' must be categorical.
 cv_results = cross_validate(model_pipeline, X, y, cv=stratified_cv.split(X, groups),
-                            scoring=['neg_mean_squared_error', 'neg_mean_absolute_error', 'r2'],
-                            return_train_score=False)
+     scoring=['neg_mean_squared_error', 'neg_mean_absolute_error', 'r2'],
+     return_train_score=False)
 
 # Calculate metric averages
 mse = -cv_results['test_neg_mean_squared_error'].mean()
@@ -275,7 +279,7 @@ ad01_range = ad01_max - ad01_min
 # Calculates the average of 'ad01'.
 ad01_mean = data['ad01'].mean()
 
-print(f"Min: {ad01_min}, Max: {ad01_max}, Rango: {ad01_range}, Media: {ad01_mean}")
+print(f"Min: {ad01_min}, Max: {ad01_max}, Range: {ad01_range}, Mean: {ad01_mean}")
 
 ```
 
@@ -287,7 +291,7 @@ MAE (Mean Absolute Error): 7.740741005126234
 
 R² (Coefficient of Determination): 0.9819430725498952
 
-Min: 113, Max: 438, Rango: 325, Media: 267.9516129032258
+Min: 113, Max: 438, Range: 325, Mean: 267.9516129032258
 
 **Model evaluation considerations:**
 
@@ -315,7 +319,7 @@ MAE: 64.35884951796959
 
 R^2: 0.9577771270155632
 
-Min: 710, Max: 2625, Rango: 1915, Media: 1518.8951612903227
+Min: 710, Max: 2625, Range: 1915, Mean: 1518.8951612903227
 
 The MSE and MAE, although they seem high in comparison with the application to the ad01 food type, should be evaluated in the context of the range and variation on the ad02 scale.
 
@@ -362,9 +366,8 @@ model_pipeline = Pipeline(steps=[
 
 # Set up cross validation
 cv_results = cross_validate(model_pipeline, X, y, cv=5,
-                            scoring={'MSE': make_scorer(mean_squared_error, greater_is_better=False),
-                                     'MAE': make_scorer(mean_absolute_error, greater_is_better=False),
-                                     'R2': 'r2'})
+     scoring={'MSE': make_scorer(mean_squared_error, greater_is_better=False),
+     'MAE': make_scorer(mean_absolute_error, greater_is_better=False), 'R2': 'r2'})
 
 # Print the results of the cross validation
 print(f"MSE (Mean Squared Error): {-np.mean(cv_results['test_MSE'])}")
@@ -391,7 +394,7 @@ plt.show()
 # Scatter plot of predicted vs. actual values
 plt.figure(figsize=(10, 6))
 sns.scatterplot(x=y, y=y_pred)
-plt.plot([y.min(), y.max()], [y.min(), y.max()], 'k--', lw=2)  # Línea de perfecta predicción
+plt.plot([y.min(), y.max()], [y.min(), y.max()], 'k--', lw=2)
 plt.title('Predicciones vs. Valores Reales')
 plt.xlabel('Valores Reales')
 plt.ylabel('Predicciones')
