@@ -1,4 +1,4 @@
-# Automation Local Food Bank
+# Automation Local Food Bank - AI
 Building AI course project
 
 ## Summary
